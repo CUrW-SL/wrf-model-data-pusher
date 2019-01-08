@@ -22,7 +22,6 @@ def read_time_index(run_dir, time_index_file_name):
     time_index_fp = path.join(run_dir, time_index_file_name)
     with open(time_index_fp) as time_index_file:
         tmi = pd.read_csv(time_index_file, parse_dates=True, names=['time'], index_col=0)
-        print(tmi)
         return tmi.index
 
 
@@ -57,7 +56,7 @@ run_date = today - timedelta(days=1)
 run_dir = path.join(BASE_DIR, RUN_DIR.format(run_date=run_date.strftime(DATE_FORMAT)))
 TIME_INDEX = read_time_index(run_dir, TIME_INDEX_FILE_NAME)
 
-
+print(F"######### Startting for {run_date} ##########")
 for station in STATIONS:
     for wrf_model in WRF_MODELS:
 
@@ -95,3 +94,4 @@ for station in STATIONS:
                     unit={'name': TMS_META['unit'], 'id': TMS_META['unit_id']}
                 )
             tms_adapter.update_timeseries(tms_id, tms['rainfall'], True)
+            print(F"Pushed data to {TMS_META}")
