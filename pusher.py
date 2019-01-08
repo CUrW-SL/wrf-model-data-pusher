@@ -56,7 +56,7 @@ run_date = today - timedelta(days=1)
 run_dir = path.join(BASE_DIR, RUN_DIR.format(run_date=run_date.strftime(DATE_FORMAT)))
 TIME_INDEX = read_time_index(run_dir, TIME_INDEX_FILE_NAME)
 
-print(F"######### Startting for {run_date} ##########")
+print(F"######### Startting for {run_date.strftime(DATE_FORMAT)} ##########")
 for station in STATIONS:
     for wrf_model in WRF_MODELS:
 
