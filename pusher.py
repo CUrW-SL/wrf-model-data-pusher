@@ -56,7 +56,7 @@ run_date = today - timedelta(days=1)
 run_dir = path.join(BASE_DIR, RUN_DIR.format(run_date=run_date.strftime(DATE_FORMAT)))
 TIME_INDEX = read_time_index(run_dir, TIME_INDEX_FILE_NAME)
 
-print(F"######### Startting for {run_date.strftime(DATE_FORMAT)} ##########")
+print("######### Startting for %s ##########" % run_date.strftime(DATE_FORMAT))
 for station in STATIONS:
     for wrf_model in WRF_MODELS:
 
@@ -94,4 +94,4 @@ for station in STATIONS:
                     unit={'name': TMS_META['unit'], 'id': TMS_META['unit_id']}
                 )
             tms_adapter.update_timeseries(tms_id, tms['rainfall'], True)
-            print(F"Pushed data to {TMS_META}")
+            print("Pushed data to tms_id: %s" % tms_id)
