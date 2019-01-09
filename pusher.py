@@ -66,7 +66,9 @@ for station in STATIONS:
             run_date=run_date.strftime(DATE_FORMAT)
         )
         rainfall_arr = read_rainfall(run_dir, rainfall_file_name)[0: TIME_INDEX.size]
-        rainfall_df = pd.DataFrame({'time': TIME_INDEX, 'value': rainfall_arr}).set_index(keys='time')
+        rainfall_df_acc = pd.DataFrame({'time': TIME_INDEX, 'value': rainfall_arr}).set_index(keys='time')
+        rainfall_df_inst = rainfall_df_acc.diff(axis=0)
+        rainfall_df_inst.dropna(inplace=True)
 
         db_engine = get_engine(
             host=DB_CONFIG['host'],
@@ -80,7 +82,7 @@ for station in STATIONS:
         TMS_META['station_name'] = station['name_in_db']
         TMS_META['source'] = wrf_model['name_in_db']
 
-        tmss = separate_rainfall_for_event_types(today, rainfall_df)
+        tmss = separate_rainfall_for_event_types(today, rainfall_df_inst)
         for tms in tmss:
             TMS_META['event_type'] = tms['event_type']
             tms_id = tms_adapter.get_timeseries_id(TMS_META)
